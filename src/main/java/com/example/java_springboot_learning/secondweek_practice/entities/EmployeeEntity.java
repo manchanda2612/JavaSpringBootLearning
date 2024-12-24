@@ -1,14 +1,12 @@
 package com.example.java_springboot_learning.secondweek_practice.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "EmployeeTable")
 public class EmployeeEntity {
 
@@ -18,4 +16,6 @@ public class EmployeeEntity {
     private String name;
     private String address;
     private String phoneNumber;
+    private LocalDate dateOfJoining;
+    private Boolean isActive;
 }

@@ -4,8 +4,13 @@ import com.example.java_springboot_learning.secondweek_practice.dto.EmployeeDto;
 import com.example.java_springboot_learning.secondweek_practice.entities.EmployeeEntity;
 import com.example.java_springboot_learning.secondweek_practice.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,8 +24,10 @@ public class EmployeeService {
         this.modelMapper = modelMapper;
     }
 
-    public EmployeeEntity findEmployee(Long employeeId){
-        return employeeRepository.findById(employeeId).orElse(null);
+    public Optional<EmployeeDto> findEmployee(Long employeeId){
+        Optional<EmployeeEntity> employeeEntity = employeeRepository.findById(employeeId);
+        return employeeEntity.map(employeeEntity1 -> modelMapper.map(employeeEntity1, EmployeeDto.class));
+
     }
 
 
@@ -36,5 +43,35 @@ public class EmployeeService {
         EmployeeEntity entity = modelMapper.map(employeeDto, EmployeeEntity.class);
         EmployeeEntity savedEmployeeDto = employeeRepository.save(entity);
         return modelMapper.map(savedEmployeeDto, EmployeeDto.class);
+    }
+
+    public EmployeeDto updateEmployeeDetails(Long id, EmployeeDto employeeDto) {
+        EmployeeEntity employeeEntity = modelMapper.map(employeeDto, EmployeeEntity.class);
+        employeeEntity.setId(id);
+        EmployeeEntity savedEmployeeEntity = employeeRepository.save(employeeEntity);
+        return modelMapper.map(savedEmployeeEntity, EmployeeDto.class);
+    }
+
+    private boolean isEmployeeExist(Long id) {
+        return employeeRepository.existsById(id);
+    }
+
+    public boolean deleteEmployeeDetail(Long id) {
+        if(!isEmployeeExist(id)) return false;
+        employeeRepository.deleteById(id);
+        return true;
+    }
+
+    public EmployeeDto updateEmployeeInfo(Long id, Map<String, Object> update) {
+        if(!isEmployeeExist(id)) return null;
+        EmployeeEntity employeeEntity = employeeRepository.findById(id).get();
+        update.forEach((field, value) -> {
+            Field fieldToBeUpdated = ReflectionUtils.findRequiredField(EmployeeEntity.class, field);
+            fieldToBeUpdated.setAccessible(true);
+            ReflectionUtils.setField(fieldToBeUpdated,employeeEntity, value);
+        });
+
+        return modelMapper.map(employeeRepository.save(employeeEntity), EmployeeDto.class);
+
     }
 }
