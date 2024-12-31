@@ -1,5 +1,7 @@
 package com.example.java_springboot_learning.secondweek_practice.dto;
 
+import com.example.java_springboot_learning.secondweek_practice.annotation.EmployeeRoleValidation;
+import com.example.java_springboot_learning.secondweek_practice.annotation.PrimeNumberValidation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -26,7 +28,8 @@ public class EmployeeDto {
     private Integer age;
 
     @NotBlank(message = "Role of the employee can't be blank")
-    @Pattern(regexp = "^(Admin|User)$", message = "Role of employee can either be User or Admin")
+    //@Pattern(regexp = "^(Admin|User)$", message = "Role of employee can either be User or Admin")
+    @EmployeeRoleValidation
     private String role;
 
     @PastOrPresent(message = "DateOfJoining field of employee can't be in the future")
@@ -42,6 +45,14 @@ public class EmployeeDto {
     @DecimalMax(value = "100000.00", message = "Salary of the employee can't be more than 100000.00")
     @DecimalMin(value = "10000.00", message = "Salary of the employee can't be less than 10000.00")
     private Double salary;
+
+    @NotNull
+    @Positive(message = "Please enter positive number")
+    @Min(value = 2, message = "Minimum value should be 2")
+    @Max(value = 100, message = "Maximum value should be 100")
+    @PrimeNumberValidation
+    @JsonProperty("isPrime")
+    private Integer isPrime;
 }
 
 

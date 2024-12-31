@@ -22,6 +22,7 @@ public class EmployeeEntity {
     private Boolean isActive;
     private Double salary;
     private String role;
+    private Integer isPrime;
 
 
 }
