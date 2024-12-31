@@ -2,6 +2,7 @@ package com.example.java_springboot_learning.secondweek_practice.controller;
 
 import com.example.java_springboot_learning.secondweek_practice.dto.EmployeeDto;
 import com.example.java_springboot_learning.secondweek_practice.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -100,7 +101,7 @@ public class EmployeeController {
     }
 
     @PostMapping(path = "saveEmployeeInH2DB")
-    public ResponseEntity<EmployeeDto> createEmployeeData(@RequestBody EmployeeDto employeeDto) {
+    public ResponseEntity<EmployeeDto> createEmployeeData(@Valid @RequestBody EmployeeDto employeeDto) {
         return new ResponseEntity<>(employeeService.createNewEmployee(employeeDto), HttpStatus.CREATED);
     }
 
