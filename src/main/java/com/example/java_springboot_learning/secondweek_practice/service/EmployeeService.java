@@ -2,6 +2,7 @@ package com.example.java_springboot_learning.secondweek_practice.service;
 
 import com.example.java_springboot_learning.secondweek_practice.dto.EmployeeDto;
 import com.example.java_springboot_learning.secondweek_practice.entities.EmployeeEntity;
+import com.example.java_springboot_learning.secondweek_practice.exceptions.ResourceNotFound;
 import com.example.java_springboot_learning.secondweek_practice.repository.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.util.ReflectionUtils;
@@ -46,24 +47,26 @@ public class EmployeeService {
     }
 
     public EmployeeDto updateEmployeeDetails(Long id, EmployeeDto employeeDto) {
+        isEmployeeExist(id);
         EmployeeEntity employeeEntity = modelMapper.map(employeeDto, EmployeeEntity.class);
         employeeEntity.setId(id);
         EmployeeEntity savedEmployeeEntity = employeeRepository.save(employeeEntity);
         return modelMapper.map(savedEmployeeEntity, EmployeeDto.class);
     }
 
-    private boolean isEmployeeExist(Long id) {
-        return employeeRepository.existsById(id);
+    private void isEmployeeExist(Long id) {
+        boolean isExist = employeeRepository.existsById(id);
+        if(!isExist) throw new ResourceNotFound("Employee Not Found with id is : "+id);
     }
 
     public boolean deleteEmployeeDetail(Long id) {
-        if(!isEmployeeExist(id)) return false;
+        isEmployeeExist(id);
         employeeRepository.deleteById(id);
         return true;
     }
 
     public EmployeeDto updateEmployeeInfo(Long id, Map<String, Object> update) {
-        if(!isEmployeeExist(id)) return null;
+        isEmployeeExist(id);
         EmployeeEntity employeeEntity = employeeRepository.findById(id).get();
         update.forEach((field, value) -> {
             Field fieldToBeUpdated = ReflectionUtils.findRequiredField(EmployeeEntity.class, field);

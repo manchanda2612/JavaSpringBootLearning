@@ -1,6 +1,7 @@
 package com.example.java_springboot_learning.secondweek_practice.controller;
 
 import com.example.java_springboot_learning.secondweek_practice.dto.EmployeeDto;
+import com.example.java_springboot_learning.secondweek_practice.exceptions.ResourceNotFound;
 import com.example.java_springboot_learning.secondweek_practice.service.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RestController
@@ -92,13 +94,15 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable(name = "employeeId") Long employeeId){
         Optional<EmployeeDto> employeeDto = employeeService.findEmployee(employeeId);
         return employeeDto.map(employeeDto1 -> ResponseEntity.ok(employeeDto1))
-                          .orElse(ResponseEntity.notFound().build());
+                          .orElseThrow(() -> new ResourceNotFound("Employee not found with id is : " + employeeId));
     }
+
 
     @GetMapping(path="getAllEmployee")
     public ResponseEntity<List<EmployeeDto>> getAllEmployee(){
         return ResponseEntity.ok(employeeService.findAllEmployee()) ;
     }
+
 
     @PostMapping(path = "saveEmployeeInH2DB")
     public ResponseEntity<EmployeeDto> createEmployeeData(@Valid @RequestBody EmployeeDto employeeDto) {
@@ -110,7 +114,7 @@ public class EmployeeController {
      */
 
     @PutMapping(path = "updateEntireEmployeeDetail/{employeeId}")
-    public ResponseEntity<EmployeeDto> updateEmployeeDetails(@PathVariable(name = "employeeId") Long employeeId,
+    public ResponseEntity<EmployeeDto> updateEmployeeDetails(@PathVariable(name = "employeeId") @Valid Long employeeId,
                                              @RequestBody EmployeeDto employeeDto) {
 
         return ResponseEntity.ok(employeeService.updateEmployeeDetails(employeeId, employeeDto));
