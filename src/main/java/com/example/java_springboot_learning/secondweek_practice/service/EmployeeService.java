@@ -28,7 +28,6 @@ public class EmployeeService {
     public Optional<EmployeeDto> findEmployee(Long employeeId){
         Optional<EmployeeEntity> employeeEntity = employeeRepository.findById(employeeId);
         return employeeEntity.map(employeeEntity1 -> modelMapper.map(employeeEntity1, EmployeeDto.class));
-
     }
 
 
