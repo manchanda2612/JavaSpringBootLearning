@@ -42,9 +42,6 @@ public class DepartmentController {
                 HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEn
-
 
 
 }
