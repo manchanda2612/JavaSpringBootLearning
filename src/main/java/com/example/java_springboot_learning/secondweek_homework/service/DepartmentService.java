@@ -17,12 +17,16 @@ public class DepartmentService {
     public DepartmentService(DepartmentRepository departmentRepository, ModelMapper modelMapper) {
         this.departmentRepository = departmentRepository;
         this.modelMapper = modelMapper;
+
     }
 
-    public Optional<DepartmentDto> findDepartmentById(Long id){
-         Optional<DepartmentEntity> departmentEntity = departmentRepository.findById(id);
-         return departmentEntity.map(departmentEntity1 -> modelMapper.map(departmentEntity1, DepartmentDto.class));
+    public DepartmentDto createNewDepartment(DepartmentDto departmentDto) {
+        DepartmentEntity departmentEntity = modelMapper.map(departmentDto, DepartmentEntity.class);
+        DepartmentEntity savedDepartmentEntity = departmentRepository.save(departmentEntity);
+        return modelMapper.map(savedDepartmentEntity, DepartmentDto.class);
     }
+
+
 
 
 
