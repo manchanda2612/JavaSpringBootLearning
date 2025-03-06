@@ -8,7 +8,6 @@ import java.time.LocalDate;
 @Entity
 @Data
 @Table(name = "DepartmentTable")
-@SuppressWarnings({"nouse"})
 public class DepartmentEntity {
 
     @Id

@@ -21,10 +21,10 @@ public class DepartmentDto {
     private String title;
 
     @DecimalMin(value = "10000.00", message = "Lowest most salary of this department employee is  : 10000")
-    @DecimalMax(value = "1000000.00", message = "Lowest most salary of this department employee is  : 1000000")
+    @DecimalMax(value = "1000000.00", message = "Maximum salary of this department employee is  : 1000000")
     @NotNull(message="Salary of the department employee can't be Null")
     @Positive(message = "Salary of the department employee should be positive")
-    @Digits(integer = 6, fraction = 2, message = "Salaries can be in the form of only XXXXXX.YY")
+    @Digits(integer = 7, fraction = 2, message = "Salaries can be in the form of only XXXXXXX.YY")
     @Range(min = 10000, max = 100000, message = "Salary should be in the range between 10000.00 to100000.00")
     private Double salary;
 
@@ -40,9 +40,10 @@ public class DepartmentDto {
     @PositiveOrZero(message = "Number can only between 0-9")
     private String LandlinePhoneNumber;
 
-    @Null
+
     @Pattern(regexp = "^(0-9)&", message = "Number can only between 0-9")
-    @Range(min = 10, max = 10, message = "")
+    @Min(value = 10, message = "Phone number should be only 10 digit")
+    @Max(value = 10, message = "Phone number should be only 10 digit")
     private String mobileNumber;
 
 
