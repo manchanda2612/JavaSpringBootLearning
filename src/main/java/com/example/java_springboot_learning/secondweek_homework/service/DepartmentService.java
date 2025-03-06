@@ -4,9 +4,7 @@ import com.example.java_springboot_learning.secondweek_homework.dto.DepartmentDt
 import com.example.java_springboot_learning.secondweek_homework.entities.DepartmentEntity;
 import com.example.java_springboot_learning.secondweek_homework.exception.ResourceNotFound;
 import com.example.java_springboot_learning.secondweek_homework.repository.DepartmentRepository;
-import javafx.scene.effect.Reflection;
 import org.modelmapper.ModelMapper;
-import org.springframework.cglib.core.ReflectUtils;
 import org.springframework.data.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
 
