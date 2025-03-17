@@ -32,11 +32,10 @@ public class EmployeeDto {
     @EmployeeRoleValidation
     private String role;
 
-    @PastOrPresent(message = "DateOfJoining field of employee can't be in the future")
+    @PastOrPresent(message = "DateOfJoining field of employee can't  be in the future")
     private LocalDate dateOfJoining;
 
     @AssertTrue(message = "Employee should be active")
-    @JsonProperty("isActive")
     private Boolean isActive;
 
     @NotNull(message="Salary of the employee can't be Null")

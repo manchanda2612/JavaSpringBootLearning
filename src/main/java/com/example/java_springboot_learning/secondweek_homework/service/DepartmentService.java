@@ -38,7 +38,7 @@ public class DepartmentService {
         return departmentEntity.map(departmentEntity1 -> modelMapper.map(departmentEntity1, DepartmentDto.class));
     }
 
-    public List<DepartmentDto> getAllDepartments() {
+    public List<DepartmentDto> findAllDepartments() {
         List<DepartmentEntity> departmentDtoList = departmentRepository.findAll();
         return departmentDtoList.stream()
                 .map(departmentEntity -> modelMapper.map(departmentEntity, DepartmentDto.class))
@@ -48,6 +48,7 @@ public class DepartmentService {
     public DepartmentDto updateDepartmentCompleteDetails(Long id, DepartmentDto departmentDto) {
         isDepartmentExists(id);
         DepartmentEntity departmentEntity = modelMapper.map(departmentDto, DepartmentEntity.class);
+        departmentEntity.setId(id);
         DepartmentEntity savedDepartment = departmentRepository.save(departmentEntity);
         return modelMapper.map(savedDepartment, DepartmentDto.class);
     }
@@ -73,7 +74,7 @@ public class DepartmentService {
     private void isDepartmentExists(Long id) {
         boolean isExist = departmentRepository.existsById(id);
         if (!isExist) {
-            throw new ResourceNotFound("Department id not found" + id);
+            throw new ResourceNotFound("Department id not found : " + id);
         }
     }
 

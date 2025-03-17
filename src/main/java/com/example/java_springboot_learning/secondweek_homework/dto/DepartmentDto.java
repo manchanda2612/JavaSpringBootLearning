@@ -9,15 +9,18 @@ import org.hibernate.validator.constraints.CreditCardNumber;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 
 @Data
 public class DepartmentDto {
 
+
     private Long id;
 
     @NotBlank
-    @Size(min = 3, max = 15, message = "Number of character should be in the range (3-15)")
+    @Size(min = 3, max = 12, message = "Number of character should be in the range (3-15)")
     private String title;
 
     @DecimalMin(value = "10000.00", message = "Lowest most salary of this department employee is  : 10000")
@@ -25,7 +28,7 @@ public class DepartmentDto {
     @NotNull(message="Salary of the department employee can't be Null")
     @Positive(message = "Salary of the department employee should be positive")
     @Digits(integer = 7, fraction = 2, message = "Salaries can be in the form of only XXXXXXX.YY")
-    @Range(min = 10000, max = 100000, message = "Salary should be in the range between 10000.00 to100000.00")
+    @Range(min = 10000, max = 1000000, message = "Salary should be in the range between 10000.00 to 1000000.00")
     private Double salary;
 
     @PastOrPresent(message = "Department formed date can't be of future")
@@ -37,15 +40,10 @@ public class DepartmentDto {
     private Integer age;
 
     @Null
-    @PositiveOrZero(message = "Number can only between 0-9")
-    private String LandlinePhoneNumber;
+    private String landLinePhoneNumber;
 
-
-    @Pattern(regexp = "^(0-9)&", message = "Number can only between 0-9")
-    @Min(value = 10, message = "Phone number should be only 10 digit")
-    @Max(value = 10, message = "Phone number should be only 10 digit")
+    @Pattern(regexp = "^[0-9]{10}$", message = "Mobile number must be exactly 10 digits and contain only numbers")
     private String mobileNumber;
-
 
     @AssertTrue(message = "Department should be active")
     @JsonProperty("isActive")
